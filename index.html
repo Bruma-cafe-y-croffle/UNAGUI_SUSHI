@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNAGUI SUSHI - Selector de Sede</title>
+    <title>UNAGUI SUSHI うなぎ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #030712;
+            background-color: #000000;
+            color: #f3f4f6;
         }
         h1, h2, .playfair-font {
             font-family: 'Playfair Display', serif;
@@ -20,15 +21,15 @@
             transition: opacity 1s ease-in-out;
         }
         #start-screen {
-            background-image: linear-gradient(rgba(0,0,0,0.98), rgba(0,0,0,0.98)), url('https://placehold.co/1600x800/1f2937/d97706?text=UNAGUI+ENTRADA'); 
+            background-image: linear-gradient(rgba(0,0,0,0.98), rgba(0,0,0,0.98)), url('https://placehold.co/1600x800/000000/d97706?text=UNAGUI+ENTRADA'); 
             background-size: cover;
             background-position: center;
         }
         #start-screen .branch-selector-card {
-            background-color: #111827;
+            background-color: #000000;
         }
         .hero-section {
-            background-image: url('https://i.pinimg.com/736x/04/f4/21/04f42187ea012e4f87964a77d147e5b9.jpg'); 
+            background-image: url('https://i.pinimg.com/1200x/8c/f7/f2/8cf7f2fc1fa311b379429275edf36ca0.jpg'); 
             background-size: cover;
             background-position: center;
             background-attachment: fixed; 
@@ -61,7 +62,7 @@
         #side-menu {
             transform: translateX(100%); 
             transition: transform 0.3s ease-in-out;
-            background-color: #030712; 
+            background-color: #000000; 
             box-shadow: -4px 0 10px rgba(0, 0, 0, 0.9);
         }
         #side-menu.open { transform: translateX(0); }
@@ -76,65 +77,126 @@
             .desktop-nav { display: flex; }
             .mobile-menu-button { display: none; }
         }
+        /* Modal Promocional */
+        #promo-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        #promo-modal-content {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(245, 158, 11, 0.3);
+            animation: modalFadeIn 0.5s ease-out;
+            position: relative;
+        }
+        /* Botón de cierre del modal */
+        #promo-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #f59e0b;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        #promo-modal-close:hover {
+            color: #fbbf24;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .promo-tag {
+            background: linear-gradient(to right, #f59e0b, #d97706);
+            color: #000;
+            font-weight: bold;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
-<body class="bg-gray-950 text-gray-100 min-h-screen">
+<body class="bg-black text-gray-100 min-h-screen">
+    <!-- Modal Promocional -->
+    <div id="promo-modal">
+        <div id="promo-modal-content">
+            <button id="promo-modal-close" onclick="closePromoModal()">&times;</button>
+            <span class="promo-tag">EXCLUSIVO</span>
+            <h2 class="text-3xl font-extrabold text-amber-400 playfair-font mb-4">Salmón Trufado</h2>
+            <img src="https://i.pinimg.com/1200x/05/45/80/05458036394edf41c89fafdb83a9a1f9.jpg" alt="Ramen mixto." class="w-full rounded-xl mb-4">
+            <p class="text-lg text-gray-200 mb-6">
+                Finas láminas de salmón fresco, aceite de trufa blanca y caviar oscietra.
+            </p>
+            <p class="text-2xl font-bold text-amber-500 mb-6">$65.000</p>
+            <button onclick="closePromoModal()" class="px-6 py-3 bg-amber-600 text-gray-900 font-bold rounded-full hover:bg-amber-700 transition duration-300 shadow-lg">
+                Disfrutar
+            </button>
+        </div>
+    </div>
+
+    <!-- Pantalla de Selección de Sede -->
     <div id="start-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="branch-selector-card p-8 sm:p-12 rounded-xl max-w-lg w-full text-center border-2 border-amber-500 shadow-2xl">
             <h1 class="text-4xl sm:text-5xl font-extrabold text-amber-300 playfair-font mb-4">
-                Bienvenido a UNAGUI SUSHI
+                Bienvenido a UNAGUI SUSHI うなぎ
             </h1>
             <p class="text-lg text-gray-300 mb-8">
                 Selecciona la sede para ver el menú.
             </p>
             <div class="space-y-4">
-                <button 
-                    onclick="selectBranch('central')" 
-                    class="w-full py-4 text-xl font-bold bg-amber-600 hover:bg-amber-700 text-gray-900 rounded-lg transition duration-300 transform hover:scale-[1.02] shadow-lg"
-                >
-                    SEDE ALUNA PLAZA - ELEGANCIA
+                <button onclick="selectBranch('central')" class="w-full py-4 text-xl font-bold bg-amber-600 hover:bg-amber-700 text-gray-900 rounded-lg transition duration-300 transform hover:scale-[1.02] shadow-lg">
+                    SEDE ALUNA PLAZA
                 </button>
-                <button 
-                    onclick="selectBranch('norte')" 
-                    class="w-full py-4 text-xl font-bold bg-gray-700 hover:bg-gray-600 text-amber-300 rounded-lg transition duration-300 transform hover:scale-[1.02] shadow-lg"
-                >
-                    SEDE LOS COCOS - CASUAL
+                <button onclick="selectBranch('norte')" class="w-full py-4 text-xl font-bold bg-gray-800 hover:bg-gray-700 text-amber-300 rounded-lg transition duration-300 transform hover:scale-[1.02] shadow-lg">
+                    SEDE LOS COCOS
                 </button>
             </div>
-            <p id="branch-message" class="mt-6 text-sm italic text-gray-400 opacity-0 transition duration-500"></p>
         </div>
     </div>
+
+    <!-- Contenido Principal -->
     <div id="main-content">
         <div id="menu-overlay" onclick="toggleSideMenu()" class="fixed inset-0 bg-black/80 z-40"></div>
-        <div id="side-menu" class="fixed top-0 right-0 w-64 h-full bg-gray-950 p-6 z-50 flex flex-col">
+        <div id="side-menu" class="fixed top-0 right-0 w-64 h-full bg-black p-6 z-50 flex flex-col">
             <button onclick="toggleSideMenu()" class="self-end text-3xl font-light text-amber-400 hover:text-amber-500 transition duration-150">&times;</button>
             <div class="mt-8 space-y-4">
                 <a href="#historia" onclick="toggleSideMenu()" class="block text-xl text-gray-200 hover:text-amber-400 py-2 border-b border-gray-700 transition duration-150 playfair-font">Historia</a>
                 <a href="#menu" onclick="toggleSideMenu()" class="block text-xl text-gray-200 hover:text-amber-400 py-2 border-b border-gray-700 transition duration-150 playfair-font">Menú</a>
                 <a href="#contacto" onclick="toggleSideMenu()" class="block text-xl text-gray-200 hover:text-amber-400 py-2 transition duration-150 playfair-font">Contacto</a>
-                <button 
-                    onclick="showBranchSelector(); toggleSideMenu();" 
-                    class="w-full mt-6 py-2 text-sm text-red-400 hover:text-red-500 border border-red-400 rounded-lg transition duration-150"
-                >
+                <button onclick="showBranchSelector(); toggleSideMenu();" class="w-full mt-6 py-2 text-sm text-red-400 hover:text-red-500 border border-red-400 rounded-lg transition duration-150">
                     Cambiar de Sede
                 </button>
             </div>
         </div>
-        <nav class="sticky top-0 z-30 bg-gray-950/95 backdrop-blur-sm shadow-lg">
+        <nav class="sticky top-0 z-30 bg-black/95 backdrop-blur-sm shadow-lg">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-16">
                     <div class="flex-shrink-0 text-2xl font-black text-amber-400 playfair-font">
-                        UNAGUI SUSHI
-                        <span id="current-branch-display" class="text-sm font-normal ml-2 px-2 py-1 rounded-full bg-gray-950 text-gray-400 border border-gray-700"></span>
+                        UNAGUI SUSHI うなぎ
+                        <span id="current-branch-display" class="text-sm font-normal ml-2 px-2 py-1 rounded-full bg-black text-gray-400 border border-gray-700"></span>
                     </div>
                     <div class="desktop-nav space-x-6">
                         <a href="#historia" class="text-gray-300 hover:text-amber-400 px-3 py-2 transition duration-150">Historia</a>
                         <a href="#menu" class="text-gray-300 hover:text-amber-400 px-3 py-2 transition duration-150">Menú</a>
                         <a href="#contacto" class="text-gray-300 hover:text-amber-400 px-3 py-2 transition duration-150">Contacto</a>
-                        <button 
-                            onclick="showBranchSelector();" 
-                            class="text-red-400 hover:text-red-500 px-3 py-2 transition duration-150 text-sm border border-red-400 rounded-lg"
-                        >
+                        <button onclick="showBranchSelector();" class="text-red-400 hover:text-red-500 px-3 py-2 transition duration-150 text-sm border border-red-400 rounded-lg">
                             Cambiar Sede
                         </button>
                     </div>
@@ -159,7 +221,7 @@
                 </a>
             </div>
         </section>
-        <section id="historia" class="py-16 sm:py-24 bg-gray-950">
+        <section id="historia" class="py-16 sm:py-24 bg-black">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-4xl font-bold text-center text-amber-400 playfair-font mb-12 border-b border-amber-800/50 pb-4">
                     Nuestra Historia y Filosofía
@@ -167,7 +229,7 @@
                 <div class="grid md:grid-cols-2 gap-10 items-center">
                     <div class="text-lg text-gray-300 space-y-4">
                         <p>
-                            En <strong>UNAGUI SUSHI</strong>, cada plato cuenta una historia de dedicación y respeto por la cocina japonesa. Fundados en el principio de que la frescura es el alma del sabor, nos hemos comprometido a utilizar solo los ingredientes más <em>premium</em> del mercado.
+                            En <strong>UNAGUI SUSHI うなぎ</strong>, cada plato cuenta una historia de dedicación y respeto por la cocina japonesa.
                         </p>
                         <p>
                             Nuestra filosofía se centra en la armonía: la armonía de sabores, texturas y, sobre todo, la armonía entre nuestros chefs y el arte ancestral del sushi.
@@ -176,26 +238,38 @@
                             "La Elegancia se cocina a fuego lento, con pasión y precisión."
                         </p>
                     </div>
-                    <img src="https://placehold.co/800x600/1f2937/d97706?text=Filosofía+UNAGUI" alt="Filosofía del Restaurante" class="rounded-xl shadow-2xl w-full h-auto object-cover">
+                    <img src="https://i.pinimg.com/1200x/f4/eb/30/f4eb3055fca35f63c54f9c5dc7febc6b.jpg" alt="Filosofía del Restaurante" class="rounded-xl shadow-2xl w-full h-auto object-cover">
                 </div>
             </div>
         </section>
-        <section id="menu" class="py-16 sm:py-24 bg-gray-950">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 bg-gray-950 p-0 rounded-xl">
-                <header class="text-center mb-12 bg-gray-900 p-6 rounded-xl border border-gray-800">
-                    <h2 class="text-5xl font-bold text-amber-400 tracking-wider playfair-font">
+        <section id="menu" class="py-16 sm:py-24 bg-black">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 bg-black p-0 rounded-xl">
+                <header class="text-center mb-8 bg-black p-6 rounded-xl border border-gray-800">
+                    <h2 class="text-5xl font-bold text-amber-400 tracking-wider playfair-font mb-4">
                         Menú Exclusivo
                     </h2>
-                    <p class="mt-2 text-xl text-gray-400">Sabores y Presentación que Deslumbran</p>
+                    <p class="mt-2 text-xl text-gray-400 mb-6">Sabores y Presentación que Deslumbran</p>
+                    <!-- Barra de Búsqueda -->
+                    <div class="relative max-w-md mx-auto">
+                        <input 
+                            type="text" 
+                            id="search-input" 
+                            placeholder="Buscar en el menú..." 
+                            class="w-full p-3 pl-10 pr-4 rounded-full bg-gray-900 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                        >
+                        <svg class="w-5 h-5 text-gray-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
                 </header>
                 <div id="menu-container" class="space-y-6"></div>
             </div>
         </section>
-        <footer id="contacto" class="bg-gray-950 py-12 border-t border-amber-900/30">
+        <footer id="contacto" class="bg-black py-12 border-t border-amber-900/30">
             <div class="max-w-4xl mx-auto px-4 text-center">
                 <h3 class="text-3xl font-bold text-amber-500 playfair-font mb-4">Reserva tu Experiencia</h3>
                 <p class="text-gray-400 mb-4">
-                    Estamos ubicados en [Tu Dirección Aquí]. Contáctanos para reservas o eventos especiales.
+                    Estamos ubicados en [Tu Dirección Aquí]. Contáctanos para reservas.
                 </p>
                 <p class="text-gray-300 font-bold">Teléfono: +123 456 7890 | Email: contacto@unagui.com</p>
                 <div class="mt-8 text-sm text-gray-600">
@@ -205,155 +279,164 @@
         </footer>
     </div>
     <script>
-        // === MENÚ EXACTO DEL PDF ===
         const menuDataByBranch = {
             'central': [
                 { category: "Coctelería de Autor", id: "cocteles_autor", items: [
-                    { name: "Tokyo Smoke", desc: "Mezcal Ojo de Tigre, zumo de limón, miel y té verde.", price: 40000, status: "AUTOR", img: "https://placehold.co/800x600/1f2937/d97706?text=Tokyo+Smoke" },
-                    { name: "Midori Basil", desc: "Gin Beefeater, licor de melón, zumo de limón, albahaca y sirope de canela.", price: 40000, status: "AUTOR", img: "https://placehold.co/800x600/1f2937/d97706?text=Midori+Basil" },
-                    { name: "Isabella Mojito", desc: "Vodka Absolut, agraz, uvas Isabellas, limón tahití, hierbabuena y azúcar.", price: 28000, status: "AUTOR", img: "https://placehold.co/800x600/1f2937/d97706?text=Isabella+Mojito" },
-                    { name: "Butterfly Pea", desc: "Absolut Vodka, zumo de limón, sirope lyche, sirope simple, soda y té mariposa.", price: 28000, status: "AUTOR", img: "https://placehold.co/800x600/1f2937/d97706?text=Butterfly+Pea" },
-                    { name: "Miyako Island", desc: "Gin Beefeater, Proseco, Curazao, zumo de limón y soda.", price: 45000, status: "AUTOR", img: "https://placehold.co/800x600/1f2937/d97706?text=Miyako+Island" }
+                    { name: "Tokyo Smoke", desc: "Mezcal Ojo de Tigre, zumo de limón, miel y té verde.", price: 40000, status: "AUTOR", img: "https://placehold.co/800x600/000000/d97706?text=Tokyo+Smoke" },
+                    { name: "Midori Basil", desc: "Gin Beefeater, licor de melón, zumo de limón, albahaca y sirope de canela.", price: 40000, status: "AUTOR", img: "https://placehold.co/800x600/000000/d97706?text=Midori+Basil" },
+                    { name: "Isabella Mojito", desc: "Vodka Absolut, agraz, uvas Isabellas, limón tahití, hierbabuena y azúcar.", price: 28000, status: "AUTOR", img: "https://placehold.co/800x600/000000/d97706?text=Isabella+Mojito" },
+                    { name: "Butterfly Pea", desc: "Absolut Vodka, zumo de limón, sirope lyche, sirope simple, soda y té mariposa.", price: 28000, status: "AUTOR", img: "https://placehold.co/800x600/000000/d97706?text=Butterfly+Pea" },
+                    { name: "Miyako Island", desc: "Gin Beefeater, Proseco, Curazao, zumo de limón y soda.", price: 45000, status: "AUTOR", img: "https://placehold.co/800x600/000000/d97706?text=Miyako+Island" }
                 ]},
                 { category: "Cocteles Clásicos", id: "cocteles_clasicos", items: [
-                    { name: "Mojito Clásico", desc: "Ron Santero 3 años, limón tahití, hierbabuena, sirope simple, soda.", price: 23000, status: "CLÁSICO", img: "https://placehold.co/800x600/1f2937/d97706?text=Mojito+Clásico" },
-                    { name: "Mojito Fruta", desc: "Ron Santero 3 años, limón tahití, hierbabuena, sirope de fruta, soda. (Maracuyá o Corozo)", price: 25000, status: "CLÁSICO", img: "https://placehold.co/800x600/1f2937/d97706?text=Mojito+Fruta" },
-                    { name: "Margarita Clásica", desc: "Tequila Olmeca, Triple Sec, zumo de limón, sirope simple.", price: 25000, status: "CLÁSICO", img: "https://placehold.co/800x600/1f2937/d97706?text=Margarita+Clásica" },
-                    { name: "Margarita Fruta", desc: "Tequila Olmeca, Triple Sec, zumo de limón, sirope de fruta. (Maracuyá o Corozo)", price: 27000, status: "CLÁSICO", img: "https://placehold.co/800x600/1f2937/d97706?text=Margarita+Fruta" },
-                    { name: "Gin Tonic", desc: "Ginebra, tónica, cascos de limón.", price: 22000, status: "CLÁSICO", img: "https://placehold.co/800x600/1f2937/d97706?text=Gin+Tonic" },
-                    { name: "Moscow Mule", desc: "Absolut Vodka, sirope jengibre, zumo de limón, soda.", price: 25000, status: "CLÁSICO", img: "https://placehold.co/800x600/1f2937/d97706?text=Moscow+Mule" }
-                ]},
-                { category: "Cocteles Premium", id: "cocteles_premium", items: [
-                    { name: "Margarita Patrón", desc: "Tequila Patrón, Triple Sec, zumo de limón, sirope simple.", price: 40000, status: "AUTOR", img: "https://placehold.co/800x600/1f2937/d97706?text=Margarita+Patrón" },
-                    { name: "Margarita Don Julio", desc: "Tequila Don Julio, Triple Sec, zumo de limón, sirope de fruta.", price: 40000, status: "AUTOR", img: "https://placehold.co/800x600/1f2937/d97706?text=Margarita+Don+Julio" },
-                    { name: "Gin Tonic Beefeater", desc: "Ginebra Beefeater, tónica, cascos de limón, romero.", price: 37000, status: "AUTOR", img: "https://placehold.co/800x600/1f2937/d97706?text=Gin+Tonic+Beefeater" },
-                    { name: "Gin Tonic Bombay", desc: "Ginebra Bombay, tónica, cascos de limón, pimienta.", price: 37000, status: "AUTOR", img: "https://placehold.co/800x600/1f2937/d97706?text=Gin+Tonic+Bombay" },
-                    { name: "Paloma Oaxaca", desc: "Mezcal Ojo de Tigre, sirope simple, zumo de limón y gaseosa de toronja.", price: 40000, status: "AUTOR", img: "https://placehold.co/800x600/1f2937/d97706?text=Paloma+Oaxaca" }
+                    { name: "Mojito Clásico", desc: "Ron Santero 3 años, limón tahití, hierbabuena, sirope simple, soda.", price: 23000, status: "CLÁSICO", img: "https://placehold.co/800x600/000000/d97706?text=Mojito+Clásico" },
+                    { name: "Mojito Fruta", desc: "Ron Santero 3 años, limón tahití, hierbabuena, sirope de fruta, soda. (Maracuyá o Corozo)", price: 25000, status: "CLÁSICO", img: "https://placehold.co/800x600/000000/d97706?text=Mojito+Fruta" },
+                    { name: "Margarita Clásica", desc: "Tequila Olmeca, Triple Sec, zumo de limón, sirope simple.", price: 25000, status: "CLÁSICO", img: "https://placehold.co/800x600/000000/d97706?text=Margarita+Clásica" },
+                    { name: "Margarita Fruta", desc: "Tequila Olmeca, Triple Sec, zumo de limón, sirope de fruta. (Maracuyá o Corozo)", price: 27000, status: "CLÁSICO", img: "https://placehold.co/800x600/000000/d97706?text=Margarita+Fruta" },
+                    { name: "Gin Tonic", desc: "Ginebra, tónica, cascos de limón.", price: 22000, status: "CLÁSICO", img: "https://placehold.co/800x600/000000/d97706?text=Gin+Tonic" },
+                    { name: "Moscow Mule", desc: "Absolut Vodka, sirope jengibre, zumo de limón, soda.", price: 25000, status: "CLÁSICO", img: "https://placehold.co/800x600/000000/d97706?text=Moscow+Mule" }
                 ]},
                 { category: "Entradas", id: "entradas", items: [
-                    { name: "Langostinos Chuneit", desc: "Langostinos tempura en una salsa cremosa al estilo chuneit (agridulce).", price: 40000, status: "TEMPURA", img: "https://placehold.co/800x600/1f2937/d97706?text=Langostinos+Chuneit" },
-                    { name: "Rolls Primavera", desc: "Langostino y cangrejo al vapor, pepino, zanahoria, cilantro y maní envueltos en hoja de papel de arroz.", price: 30000, status: "COCIDO", img: "https://placehold.co/800x600/1f2937/d97706?text=Rolls+Primavera" },
-                    { name: "Negui Crunch", desc: "Bocados de salmón natural, arroz de sushi mezclado con crunch de tempura y ensalada de cangrejo.", price: 30000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Negui+Crunch" },
-                    { name: "Tuna Crispy Rice", desc: "Bocaditos de arroz crujiente, en una cama de mousse de aguacate y tartar de atún.", price: 30000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Tuna+Crispy+Rice" },
-                    { name: "Tuna Tataki", desc: "Atún sellado con sésamo sobre una salsa ponzu.", price: 40000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Tuna+Tataki" },
-                    { name: "Edamame", desc: "Frijoles de soja.", price: 18000, status: "VEGETARIANO", img: "https://placehold.co/800x600/1f2937/d97706?text=Edamame" },
-                    { name: "Gyosas", desc: "Empanaditas al vapor rellenas de cerdo con vegetales.", price: 25000, status: "COCIDO", img: "https://placehold.co/800x600/1f2937/d97706?text=Gyosas" },
-                    { name: "Kani Salad", desc: "Mezcla de kani, cebollín, salsa dinamita, crunch y nuestra salsa Unagui.", price: 40000, status: "COCIDO", img: "https://placehold.co/800x600/1f2937/d97706?text=Kani+Salad" },
-                    { name: "Kushiyaki", desc: "Pinchos de lomo fino de res marinados en aceite de sésamo, jengibre, ajo, vinagre de arroz, caramelizados en salsa teriyaki.", price: 28000, status: "COCIDO", img: "https://placehold.co/800x600/1f2937/d97706?text=Kushiyaki" },
-                    { name: "Yakitori", desc: "Pinchos de pollo marinados en aceite de sésamo, jengibre, ajo, vinagre de arroz, caramelizados en salsa teriyaki.", price: 24000, status: "COCIDO", img: "https://placehold.co/800x600/1f2937/d97706?text=Yakitori" }
+                    { name: "Langostinos Chuneit", desc: "Langostinos tempura en una salsa cremosa al estilo chuneit (agridulce).", price: 40000, status: "TEMPURA", img: "https://placehold.co/800x600/000000/d97706?text=Langostinos+Chuneit" },
+                    { name: "Rolls Primavera", desc: "Langostino y cangrejo al vapor, pepino, zanahoria, cilantro y maní envueltos en hoja de papel de arroz.", price: 30000, status: "COCIDO", img: "https://placehold.co/800x600/000000/d97706?text=Rolls+Primavera" },
+                    { name: "Negui Crunch", desc: "Bocados de salmón natural, arroz de sushi mezclado con crunch de tempura y ensalada de cangrejo.", price: 30000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Negui+Crunch" },
+                    { name: "Tuna Crispy Rice", desc: "Bocaditos de arroz crujiente, en una cama de mousse de aguacate y tartar de atún.", price: 30000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Tuna+Crispy+Rice" },
+                    { name: "Tuna Tataki", desc: "Atún sellado con sésamo sobre una salsa ponzu.", price: 40000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Tuna+Tataki" },
+                    { name: "Edamame", desc: "Frijoles de soja.", price: 18000, status: "VEGETARIANO", img: "https://placehold.co/800x600/000000/d97706?text=Edamame" },
+                    { name: "Gyosas", desc: "Empanaditas al vapor rellenas de cerdo con vegetales.", price: 25000, status: "COCIDO", img: "https://placehold.co/800x600/000000/d97706?text=Gyosas" },
+                    { name: "Kani Salad", desc: "Mezcla de kani, cebollín, salsa dinamita, crunch y nuestra salsa Unagui.", price: 40000, status: "COCIDO", img: "https://placehold.co/800x600/000000/d97706?text=Kani+Salad" },
+                    { name: "Kushiyaki", desc: "Pinchos de lomo fino de res marinados en aceite de sésamo, jengibre, ajo, vinagre de arroz, caramelizados en salsa teriyaki.", price: 28000, status: "COCIDO", img: "https://placehold.co/800x600/000000/d97706?text=Kushiyaki" },
+                    { name: "Yakitori", desc: "Pinchos de pollo marinados en aceite de sésamo, jengibre, ajo, vinagre de arroz, caramelizados en salsa teriyaki.", price: 24000, status: "COCIDO", img: "https://placehold.co/800x600/000000/d97706?text=Yakitori" }
+                ]},
+                { category: "Platos Fuertes", id: "platos_fuertes", items: [
+                    { name: "Ramen de Pollo", desc: "Deliciosa sopa de fideos ramen con caldo a base de soya, pollo, huevo cocido y vegetales frescos.", price: 35000, status: "CALIENTE", img: "https://placehold.co/800x600/000000/d97706?text=Ramen+de+Pollo" },
+                    { name: "Teppanyaki de Langostinos", desc: "Langostinos frescos a la plancha, en mantequilla de ajo y soya, con vegetales salteados.", price: 65000, status: "COCIDO", img: "https://placehold.co/800x600/000000/d97706?text=Teppanyaki+Langostinos" },
+                    { name: "Yakimeshi Mixto", desc: "Arroz salteado con pollo, camarón, carne y vegetales en salsa de soya.", price: 45000, status: "COCIDO", img: "https://placehold.co/800x600/000000/d97706?text=Yakimeshi+Mixto" },
+                    { name: "Yaki Udon Pollo", desc: "Fideos udon gruesos y suaves, salteados al wok con tiras de pollo y una mezcla de vegetales frescos en salsa a base de soya y jengibre.", price: 40000, status: "COCIDO", img: "https://placehold.co/800x600/000000/d97706?text=Yaki+Udon+Pollo" },
+                    { name: "Teppanyaki de Lomo", desc: "Corte de lomo fino a la plancha con mantequilla de ajo, acompañado de vegetales.", price: 55000, status: "COCIDO", img: "https://placehold.co/800x600/000000/d97706?text=Teppanyaki+Lomo" },
+                    { name: "Yakisoba con Camarones", desc: "Fideos soba salteados con camarones y vegetales.", price: 45000, status: "COCIDO", img: "https://placehold.co/800x600/000000/d97706?text=Yakisoba" }
                 ]},
                 { category: "Nigiris", id: "nigiris", items: [
-                    { name: "Nigiri Sake", desc: "Salmón natural y arroz de sushi.", price: 20000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Nigiri+Sake" },
-                    { name: "Nigiri Unagui", desc: "Anguila ahumada y arroz de sushi.", price: 25000, status: "COCIDO", img: "https://placehold.co/800x600/1f2937/d97706?text=Nigiri+Unagui" },
-                    { name: "Nigiri Maguro", desc: "Atún natural y arroz de sushi.", price: 22000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Nigiri+Maguro" },
-                    { name: "Nigiri Hamachi", desc: "Atún de aleta amarilla y arroz de sushi.", price: 30000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Nigiri+Hamachi" },
-                    { name: "Nigiri Ikura", desc: "Huevas de salmón y arroz de sushi.", price: 45000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Nigiri+Ikura" },
-                    { name: "Nigiri Masago", desc: "Huevas de cangrejo y arroz de sushi.", price: 25000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Nigiri+Masago" }
+                    { name: "Nigiri Sake", desc: "Salmón natural y arroz de sushi.", price: 20000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Nigiri+Sake" },
+                    { name: "Nigiri Unagui", desc: "Anguila ahumada y arroz de sushi.", price: 25000, status: "COCIDO", img: "https://placehold.co/800x600/000000/d97706?text=Nigiri+Unagui" },
+                    { name: "Nigiri Maguro", desc: "Atún natural y arroz de sushi.", price: 22000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Nigiri+Maguro" },
+                    { name: "Nigiri Hamachi", desc: "Atún de aleta amarilla y arroz de sushi.", price: 30000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Nigiri+Hamachi" },
+                    { name: "Nigiri Ikura", desc: "Huevas de salmón y arroz de sushi.", price: 45000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Nigiri+Ikura" },
+                    { name: "Nigiri Masago", desc: "Huevas de cangrejo y arroz de sushi.", price: 25000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Nigiri+Masago" }
                 ]},
                 { category: "Sashimi", id: "sashimi", items: [
-                    { name: "Sashimi Atún", desc: "4 piezas de los mejores y más frescos cortes.", price: 30000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Sashimi+Atún" },
-                    { name: "Sashimi Salmón", desc: "4 piezas de los mejores y más frescos cortes.", price: 30000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Sashimi+Salmón" },
-                    { name: "Sashimi Hamachi", desc: "4 piezas de los mejores y más frescos cortes.", price: 60000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Sashimi+Hamachi" }
+                    { name: "Sashimi Atún", desc: "4 piezas de los mejores y más frescos cortes.", price: 30000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Sashimi+Atún" },
+                    { name: "Sashimi Salmón", desc: "4 piezas de los mejores y más frescos cortes.", price: 30000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Sashimi+Salmón" },
+                    { name: "Sashimi Hamachi", desc: "4 piezas de los mejores y más frescos cortes.", price: 60000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Sashimi+Hamachi" }
                 ]},
                 { category: "Rolls Especiales", id: "rolls_especiales", items: [
-                    { name: "Unagui Especial Roll", desc: "Cangrejo, salmón, queso crema, topping de anguila flambeada.", price: 60000, status: "FLAMBEADO", img: "https://placehold.co/800x600/1f2937/d97706?text=Unagui+Especial+Roll" },
-                    { name: "Dip Salmon", desc: "Langostino tempurizado, pasta de cangrejo, queso crema, aguacate, masago, cebollín, topping de salmón y pasta de cangrejo.", price: 60000, status: "TEMPURA", img: "https://placehold.co/800x600/1f2937/d97706?text=Dip+Salmon" },
-                    { name: "Ovalle Roll", desc: "Langostinos empanizados, queso crema, aguacate y topping de tartar de atún.", price: 48000, status: "TEMPURA", img: "https://placehold.co/800x600/1f2937/d97706?text=Ovalle+Roll" },
-                    { name: "Nigui Roll", desc: "Salmón natural, arroz, crunch y ensalada de cangrejo.", price: 48000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Nigui+Roll" },
-                    { name: "Unagui Roll", desc: "Anguila, langostinos empanizados, queso crema, cebollín, con topping de cangrejo.", price: 50000, status: "TEMPURA", img: "https://placehold.co/800x600/1f2937/d97706?text=Unagui+Roll" },
-                    { name: "Tataki Roll", desc: "Salmón, queso crema, aguacate con topping de tataki de atún y mousse de aguacate.", price: 48000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Tataki+Roll" },
-                    { name: "Explosión", desc: "Langostino tempura, cangrejo, queso crema, pepino, topping de atún, aguacate y masago.", price: 50000, status: "TEMPURA", img: "https://placehold.co/800x600/1f2937/d97706?text=Explosión" },
-                    { name: "Rainbow (Natural)", desc: "Atún, salmón, tilapia, aguacate, topping de atún, salmón, tilapia y aguacate.", price: 45000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Rainbow" },
-                    { name: "Osaka Frain (Natural)", desc: "Rollo de salmón sin arroz, atún, tilapia, cangrejo, aguacate, queso crema y masago.", price: 50000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Osaka+Frain" },
-                    { name: "Tuna Spice Maki (Natural)", desc: "Atún, crunch, aguacate, sriracha, cebollín y masago.", price: 40000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Tuna+Spice+Maki" },
-                    { name: "Salmón Especial (Natural)", desc: "Salmón, crunch, cebollín, masago y jengibre.", price: 35000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Salmón+Especial" },
-                    { name: "Tempura Crunch", desc: "Anguila, cangrejo empanizado, tilapia, salmón, cebollín, queso crema, masago y topping de cangrejo.", price: 55000, status: "TEMPURA", img: "https://placehold.co/800x600/1f2937/d97706?text=Tempura+Crunch" },
-                    { name: "Volcano", desc: "Salmón, langostino empanizado, queso crema, topping de cangrejo, wakame, masago, cebollín y spice.", price: 55000, status: "TEMPURA", img: "https://placehold.co/800x600/1f2937/d97706?text=Volcano" },
-                    { name: "Tigger Especial", desc: "Salmón, queso crema, aguacate, masago, topping de cangrejo gratinado.", price: 55000, status: "FLAMBEADO", img: "https://placehold.co/800x600/1f2937/d97706?text=Tigger+Especial" },
-                    { name: "Latin Roll", desc: "Langostino empanizado, aguacate, queso crema, topping de plátano maduro.", price: 45000, status: "TEMPURA", img: "https://placehold.co/800x600/1f2937/d97706?text=Latin+Roll" },
-                    { name: "Ojo de Tigre", desc: "Salmón, atún, cangrejo empanizado, queso crema, aguacate, topping de ajonjolí negro y salsa dinamita.", price: 55000, status: "TEMPURA", img: "https://placehold.co/800x600/1f2937/d97706?text=Ojo+de+Tigre" },
-                    { name: "Fugi Roll", desc: "Salmón natural, queso crema, cebollín, topping de kakiague y langostinos tempura.", price: 50000, status: "TEMPURA", img: "https://placehold.co/800x600/1f2937/d97706?text=Fugi+Roll" },
-                    { name: "Skin Tempura", desc: "Langostino empanizados, queso crema, piel de salmón crocante, aguacate, wakame y masago.", price: 45000, status: "TEMPURA", img: "https://placehold.co/800x600/1f2937/d97706?text=Skin+Tempura" }
+                    { name: "Unagui Especial Roll", desc: "Cangrejo, salmón, queso crema, topping de anguila flambeada.", price: 60000, status: "FLAMBEADO", img: "https://placehold.co/800x600/000000/d97706?text=Unagui+Especial" },
+                    { name: "Dip Salmon", desc: "Langostino tempurizado, pasta de cangrejo, queso crema, aguacate, masago, cebollín, topping de salmón y pasta de cangrejo.", price: 60000, status: "TEMPURA", img: "https://placehold.co/800x600/000000/d97706?text=Dip+Salmon" },
+                    { name: "Ovalle Roll", desc: "Langostinos empanizados, queso crema, aguacate y topping de tartar de atún.", price: 48000, status: "TEMPURA", img: "https://placehold.co/800x600/000000/d97706?text=Ovalle+Roll" },
+                    { name: "Nigui Roll", desc: "Salmón natural, arroz, crunch y ensalada de cangrejo.", price: 48000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Nigui+Roll" },
+                    { name: "Unagui Roll", desc: "Anguila, langostinos empanizados, queso crema, cebollín, con topping de cangrejo.", price: 50000, status: "TEMPURA", img: "https://placehold.co/800x600/000000/d97706?text=Unagui+Roll" },
+                    { name: "Tataki Roll", desc: "Salmón, queso crema, aguacate con topping de tataki de atún y mousse de aguacate.", price: 48000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Tataki+Roll" },
+                    { name: "Explosión", desc: "Langostino tempura, cangrejo, queso crema, pepino, topping de atún, aguacate y masago.", price: 50000, status: "TEMPURA", img: "https://placehold.co/800x600/000000/d97706?text=Explosión" },
+                    { name: "Rainbow (Natural)", desc: "Atún, salmón, tilapia, aguacate, topping de atún, salmón, tilapia y aguacate.", price: 45000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Rainbow" },
+                    { name: "Osaka Frain (Natural)", desc: "Rollo de salmón sin arroz, atún, tilapia, cangrejo, aguacate, queso crema y masago.", price: 50000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Osaka+Frain" },
+                    { name: "Tuna Spice Maki (Natural)", desc: "Atún, crunch, aguacate, sriracha, cebollín y masago.", price: 40000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Tuna+Spice+Maki" },
+                    { name: "Salmón Especial (Natural)", desc: "Salmón, crunch, cebollín, masago y jengibre.", price: 35000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Salmón+Especial" },
+                    { name: "Tempura Crunch", desc: "Anguila, cangrejo empanizado, tilapia, salmón, cebollín, queso crema, masago y topping de cangrejo.", price: 55000, status: "TEMPURA", img: "https://placehold.co/800x600/000000/d97706?text=Tempura+Crunch" },
+                    { name: "Volcano", desc: "Salmón, langostino empanizado, queso crema, topping de cangrejo, wakame, masago, cebollín y spice.", price: 55000, status: "TEMPURA", img: "https://placehold.co/800x600/000000/d97706?text=Volcano" },
+                    { name: "Tigger Especial", desc: "Salmón, queso crema, aguacate, masago, topping de cangrejo gratinado.", price: 55000, status: "FLAMBEADO", img: "https://placehold.co/800x600/000000/d97706?text=Tigger+Especial" },
+                    { name: "Latin Roll", desc: "Langostino empanizado, aguacate, queso crema, topping de plátano maduro.", price: 45000, status: "TEMPURA", img: "https://placehold.co/800x600/000000/d97706?text=Latin+Roll" },
+                    { name: "Ojo de Tigre", desc: "Salmón, atún, cangrejo empanizado, queso crema, aguacate, topping de ajonjolí negro y salsa dinamita.", price: 55000, status: "TEMPURA", img: "https://placehold.co/800x600/000000/d97706?text=Ojo+de+Tigre" },
+                    { name: "Fugi Roll", desc: "Salmón natural, queso crema, cebollín, topping de kakiague y langostinos tempura.", price: 50000, status: "TEMPURA", img: "https://placehold.co/800x600/000000/d97706?text=Fugi+Roll" },
+                    { name: "Skin Tempura", desc: "Langostino empanizados, queso crema, piel de salmón crocante, aguacate, wakame y masago.", price: 45000, status: "TEMPURA", img: "https://placehold.co/800x600/000000/d97706?text=Skin+Tempura" }
                 ]},
                 { category: "Rolls Clásicos", id: "rolls_clasicos", items: [
-                    { name: "Alaska Roll", desc: "Salmón, queso crema, aguacate y ajonjolí.", price: 30000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Alaska+Roll" },
-                    { name: "California Roll", desc: "Cangrejo, aguacate, pepino, topping de masago y ajonjolí negro.", price: 30000, status: "COCIDO", img: "https://placehold.co/800x600/1f2937/d97706?text=California+Roll" }
+                    { name: "Alaska Roll", desc: "Salmón, queso crema, aguacate y ajonjolí.", price: 30000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Alaska+Roll" },
+                    { name: "California Roll", desc: "Cangrejo, aguacate, pepino, topping de masago y ajonjolí negro.", price: 30000, status: "COCIDO", img: "https://placehold.co/800x600/000000/d97706?text=California+Roll" }
                 ]},
                 { category: "Tragos", id: "tragos", items: [
-                    { name: "Ron Zacapa Ámbar", desc: "Ron premium.", price: 35000, status: "ALCOHOL", img: "https://placehold.co/800x600/1f2937/d97706?text=Zacapa" },
-                    { name: "Tequila Patrón Reposado", desc: "Tequila premium.", price: 40000, status: "ALCOHOL", img: "https://placehold.co/800x600/1f2937/d97706?text=Patrón" },
-                    { name: "Tequila Don Julio Reposado", desc: "Tequila premium.", price: 37000, status: "ALCOHOL", img: "https://placehold.co/800x600/1f2937/d97706?text=Don+Julio" },
-                    { name: "Whisky Glenlivet", desc: "Whisky escocés.", price: 30000, status: "ALCOHOL", img: "https://placehold.co/800x600/1f2937/d97706?text=Glenlivet" },
-                    { name: "Whisky Chivas Extra", desc: "Whisky escocés.", price: 30000, status: "ALCOHOL", img: "https://placehold.co/800x600/1f2937/d97706?text=Chivas" },
-                    { name: "Jack Daniel's", desc: "Whisky americano.", price: 30000, status: "ALCOHOL", img: "https://placehold.co/800x600/1f2937/d97706?text=Jack+Daniels" },
-                    { name: "Buchanan's Master", desc: "Whisky escocés.", price: 30000, status: "ALCOHOL", img: "https://placehold.co/800x600/1f2937/d97706?text=Buchanan" },
-                    { name: "Mezcal Ojo de Tigre", desc: "Mezcal artesanal.", price: 30000, status: "ALCOHOL", img: "https://placehold.co/800x600/1f2937/d97706?text=Ojo+de+Tigre" }
+                    { name: "Ron Zacapa Ámbar", desc: "Ron premium.", price: 35000, status: "ALCOHOL", img: "https://placehold.co/800x600/000000/d97706?text=Zacapa" },
+                    { name: "Tequila Patrón Reposado", desc: "Tequila premium.", price: 40000, status: "ALCOHOL", img: "https://placehold.co/800x600/000000/d97706?text=Patrón" },
+                    { name: "Tequila Don Julio Reposado", desc: "Tequila premium.", price: 37000, status: "ALCOHOL", img: "https://placehold.co/800x600/000000/d97706?text=Don+Julio" },
+                    { name: "Whisky Glenlivet", desc: "Whisky escocés.", price: 30000, status: "ALCOHOL", img: "https://placehold.co/800x600/000000/d97706?text=Glenlivet" },
+                    { name: "Whisky Chivas Extra", desc: "Whisky escocés.", price: 30000, status: "ALCOHOL", img: "https://placehold.co/800x600/000000/d97706?text=Chivas" },
+                    { name: "Jack Daniel's", desc: "Whisky americano.", price: 30000, status: "ALCOHOL", img: "https://placehold.co/800x600/000000/d97706?text=Jack+Daniels" },
+                    { name: "Buchanan's Master", desc: "Whisky escocés.", price: 30000, status: "ALCOHOL", img: "https://placehold.co/800x600/000000/d97706?text=Buchanan" },
+                    { name: "Mezcal Ojo de Tigre", desc: "Mezcal artesanal.", price: 30000, status: "ALCOHOL", img: "https://placehold.co/800x600/000000/d97706?text=Ojo+de+Tigre" }
                 ]},
                 { category: "Cervezas", id: "cervezas", items: [
-                    { name: "Stella", desc: "Cerveza premium.", price: 15000, status: "ALCOHOL", img: "https://placehold.co/800x600/1f2937/d97706?text=Stella" },
-                    { name: "Coronita", desc: "Cerveza ligera.", price: 15000, status: "ALCOHOL", img: "https://placehold.co/800x600/1f2937/d97706?text=Coronita" },
-                    { name: "Cerveza Asahi", desc: "Cerveza japonesa.", price: 18000, status: "ALCOHOL", img: "https://placehold.co/800x600/1f2937/d97706?text=Asahi" },
-                    { name: "Cerveza Modelo", desc: "Cerveza mexicana.", price: 15000, status: "ALCOHOL", img: "https://placehold.co/800x600/1f2937/d97706?text=Modelo" }
+                    { name: "Stella", desc: "Cerveza premium.", price: 15000, status: "ALCOHOL", img: "https://placehold.co/800x600/000000/d97706?text=Stella" },
+                    { name: "Coronita", desc: "Cerveza ligera.", price: 15000, status: "ALCOHOL", img: "https://placehold.co/800x600/000000/d97706?text=Coronita" },
+                    { name: "Cerveza Asahi", desc: "Cerveza japonesa.", price: 18000, status: "ALCOHOL", img: "https://placehold.co/800x600/000000/d97706?text=Asahi" },
+                    { name: "Cerveza Modelo", desc: "Cerveza mexicana.", price: 15000, status: "ALCOHOL", img: "https://placehold.co/800x600/000000/d97706?text=Modelo" }
                 ]},
                 { category: "Limonadas", id: "limonadas", items: [
-                    { name: "Limonada de Coco", desc: "Refrescante con crema de coco.", price: 15000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Limonada+Coco" },
-                    { name: "Limonada de Hierbabuena", desc: "Fresca y aromática.", price: 15000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Limonada+Hierba" },
-                    { name: "Limonada de Jengibre", desc: "Picante y refrescante.", price: 15000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Limonada+Jengibre" },
-                    { name: "Limonada Vino", desc: "Con vino blanco.", price: 20000, status: "ALCOHOL", img: "https://placehold.co/800x600/1f2937/d97706?text=Limonada+Vino" }
+                    { name: "Limonada de Coco", desc: "Refrescante con crema de coco.", price: 15000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Limonada+Coco" },
+                    { name: "Limonada de Hierbabuena", desc: "Fresca y aromática.", price: 15000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Limonada+Hierba" },
+                    { name: "Limonada de Jengibre", desc: "Picante y refrescante.", price: 15000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Limonada+Jengibre" },
+                    { name: "Limonada Vino", desc: "Con vino blanco.", price: 20000, status: "ALCOHOL", img: "https://placehold.co/800x600/000000/d97706?text=Limonada+Vino" }
                 ]},
                 { category: "Sodas Artesanales", id: "sodas", items: [
-                    { name: "Soda Maracuyá", desc: "Refrescante y tropical.", price: 15000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Maracuyá" },
-                    { name: "Soda Corozo", desc: "Sabor autóctono.", price: 15000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Corozo" },
-                    { name: "Soda Panela", desc: "Dulce y tradicional.", price: 15000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Panela" },
-                    { name: "Soda Lychee", desc: "Exótica y floral.", price: 20000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Lychee" }
+                    { name: "Soda Maracuyá", desc: "Refrescante y tropical.", price: 15000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Maracuyá" },
+                    { name: "Soda Corozo", desc: "Sabor autóctono.", price: 15000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Corozo" },
+                    { name: "Soda Panela", desc: "Dulce y tradicional.", price: 15000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Panela" },
+                    { name: "Soda Lychee", desc: "Exótica y floral.", price: 20000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Lychee" }
                 ]},
                 { category: "Soft Drinks", id: "softs", items: [
-                    { name: "Agua sin gas", desc: "Agua pura.", price: 5000, status: "COMERCIAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Agua" },
-                    { name: "Bretaña", desc: "Agua mineral con gas.", price: 8000, status: "COMERCIAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Bretaña" },
-                    { name: "Canada Dry", desc: "Gaseosa de jengibre.", price: 8000, status: "COMERCIAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Canada+Dry" },
-                    { name: "Coca-Cola", desc: "Gaseosa clásica.", price: 8000, status: "COMERCIAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Coca" },
-                    { name: "Coca-Cola Zero", desc: "Sin azúcar.", price: 8000, status: "COMERCIAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Coca+Zero" }
+                    { name: "Agua sin gas", desc: "Agua pura.", price: 5000, status: "COMERCIAL", img: "https://placehold.co/800x600/000000/d97706?text=Agua" },
+                    { name: "Bretaña", desc: "Agua mineral con gas.", price: 8000, status: "COMERCIAL", img: "https://placehold.co/800x600/000000/d97706?text=Bretaña" },
+                    { name: "Canada Dry", desc: "Gaseosa de jengibre.", price: 8000, status: "COMERCIAL", img: "https://placehold.co/800x600/000000/d97706?text=Canada+Dry" },
+                    { name: "Coca-Cola", desc: "Gaseosa clásica.", price: 8000, status: "COMERCIAL", img: "https://placehold.co/800x600/000000/d97706?text=Coca" },
+                    { name: "Coca-Cola Zero", desc: "Sin azúcar.", price: 8000, status: "COMERCIAL", img: "https://placehold.co/800x600/000000/d97706?text=Coca+Zero" }
                 ]}
             ],
             'norte': [
                 { category: "Cocteles Clásicos", id: "cocteles_norte", items: [
-                    { name: "Mojito Clásico", desc: "Ron Santero 3 años, limón tahití, hierbabuena, sirope simple, soda.", price: 23000, status: "CLÁSICO", img: "https://placehold.co/800x600/1f2937/d97706?text=Mojito+Clásico" },
-                    { name: "Mojito Fruta", desc: "Ron Santero 3 años, limón tahití, hierbabuena, sirope de fruta, soda.", price: 25000, status: "CLÁSICO", img: "https://placehold.co/800x600/1f2937/d97706?text=Mojito+Fruta" },
-                    { name: "Gin Tonic", desc: "Ginebra, tónica, cascos de limón.", price: 22000, status: "CLÁSICO", img: "https://placehold.co/800x600/1f2937/d97706?text=Gin+Tonic" }
+                    { name: "Mojito Clásico", desc: "Ron Santero 3 años, limón tahití, hierbabuena, sirope simple, soda.", price: 23000, status: "CLÁSICO", img: "https://placehold.co/800x600/000000/d97706?text=Mojito+Clásico" },
+                    { name: "Mojito Fruta", desc: "Ron Santero 3 años, limón tahití, hierbabuena, sirope de fruta, soda.", price: 25000, status: "CLÁSICO", img: "https://placehold.co/800x600/000000/d97706?text=Mojito+Fruta" },
+                    { name: "Gin Tonic", desc: "Ginebra, tónica, cascos de limón.", price: 22000, status: "CLÁSICO", img: "https://placehold.co/800x600/000000/d97706?text=Gin+Tonic" }
                 ]},
                 { category: "Entradas", id: "entradas_norte", items: [
-                    { name: "Gyosas", desc: "Empanaditas al vapor rellenas de cerdo con vegetales.", price: 25000, status: "COCIDO", img: "https://placehold.co/800x600/1f2937/d97706?text=Gyosas" },
-                    { name: "Edamame", desc: "Frijoles de soja.", price: 18000, status: "VEGETARIANO", img: "https://placehold.co/800x600/1f2937/d97706?text=Edamame" },
-                    { name: "Negui Crunch", desc: "Bocados de salmón natural, arroz de sushi mezclado con crunch de tempura y ensalada de cangrejo.", price: 30000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Negui+Crunch" }
+                    { name: "Gyosas", desc: "Empanaditas al vapor rellenas de cerdo con vegetales.", price: 25000, status: "COCIDO", img: "https://placehold.co/800x600/000000/d97706?text=Gyosas" },
+                    { name: "Edamame", desc: "Frijoles de soja.", price: 18000, status: "VEGETARIANO", img: "https://placehold.co/800x600/000000/d97706?text=Edamame" },
+                    { name: "Negui Crunch", desc: "Bocados de salmón natural, arroz de sushi mezclado con crunch de tempura y ensalada de cangrejo.", price: 30000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Negui+Crunch" },
+                    { name: "Ramen de Pollo", desc: "Sopa de fideos ramen con caldo a base de soya, pollo y vegetales.", price: 35000, status: "CALIENTE", img: "https://placehold.co/800x600/000000/d97706?text=Ramen+Pollo" }
                 ]},
                 { category: "Rolls Populares", id: "rolls_norte", items: [
-                    { name: "California Roll", desc: "Cangrejo, aguacate, pepino, topping de masago y ajonjolí negro.", price: 30000, status: "COCIDO", img: "https://placehold.co/800x600/1f2937/d97706?text=California+Roll" },
-                    { name: "Alaska Roll", desc: "Salmón, queso crema, aguacate y ajonjolí.", price: 30000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Alaska+Roll" },
-                    { name: "Tuna Spice Maki", desc: "Atún, crunch, aguacate, sriracha, cebollín y masago.", price: 40000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Tuna+Spice+Maki" }
+                    { name: "California Roll", desc: "Cangrejo, aguacate, pepino, topping de masago y ajonjolí negro.", price: 30000, status: "COCIDO", img: "https://placehold.co/800x600/000000/d97706?text=California+Roll" },
+                    { name: "Alaska Roll", desc: "Salmón, queso crema, aguacate y ajonjolí.", price: 30000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Alaska+Roll" },
+                    { name: "Tuna Spice Maki", desc: "Atún, crunch, aguacate, sriracha, cebollín y masago.", price: 40000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Tuna+Spice+Maki" }
+                ]},
+                { category: "Platos Fuertes", id: "platos_fuertes_norte", items: [
+                    { name: "Teppanyaki de Lomo", desc: "Corte de lomo fino a la plancha con mantequilla de ajo, acompañado de vegetales.", price: 55000, status: "COCIDO", img: "https://placehold.co/800x600/000000/d97706?text=Teppanyaki+Lomo" },
+                    { name: "Yakisoba con Camarones", desc: "Fideos soba salteados con camarones y vegetales.", price: 45000, status: "COCIDO", img: "https://placehold.co/800x600/000000/d97706?text=Yakisoba" },
+                    { name: "Kushiyaki", desc: "Pinchos de lomo fino caramelizados en salsa teriyaki.", price: 28000, status: "COCIDO", img: "https://placehold.co/800x600/000000/d97706?text=Kushiyaki" }
                 ]},
                 { category: "Bebidas", id: "bebidas_norte", items: [
-                    { name: "Limonada de Coco", desc: "Refrescante con crema de coco.", price: 15000, status: "NATURAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Limonada+Coco" },
-                    { name: "Coca-Cola", desc: "Gaseosa clásica.", price: 8000, status: "COMERCIAL", img: "https://placehold.co/800x600/1f2937/d97706?text=Coca" }
+                    { name: "Limonada de Coco", desc: "Refrescante con crema de coco.", price: 15000, status: "NATURAL", img: "https://placehold.co/800x600/000000/d97706?text=Limonada+Coco" },
+                    { name: "Coca-Cola", desc: "Gaseosa clásica.", price: 8000, status: "COMERCIAL", img: "https://placehold.co/800x600/000000/d97706?text=Coca" }
                 ]}
             ]
         };
 
         let currentBranch = null;
+        let promoShown = false;
+        let menuCache = {}; // Para evitar re-renderizar todo al buscar
 
         function getStatusClasses(status) {
-            switch (status) {
-                case 'NATURAL': return 'bg-emerald-700 text-emerald-100 ring-1 ring-emerald-500';
-                case 'TEMPURA': return 'bg-red-800 text-red-100 ring-1 ring-red-500';
-                case 'FLAMBEADO': return 'bg-amber-600 text-amber-50 ring-1 ring-amber-400';
-                case 'CALIENTE': return 'bg-red-600 text-red-50 ring-1 ring-red-400';
-                case 'COCIDO': return 'bg-gray-700 text-gray-200 ring-1 ring-gray-500';
-                case 'AUTOR': return 'bg-purple-800 text-purple-100 ring-1 ring-purple-500';
-                case 'CLÁSICO': return 'bg-blue-800 text-blue-100 ring-1 ring-blue-500';
-                case 'ALCOHOL': return 'bg-yellow-900 text-yellow-200 ring-1 ring-yellow-500';
-                case 'VEGETARIANO': return 'bg-lime-700 text-lime-100 ring-1 ring-lime-500';
-                case 'COMERCIAL': return 'bg-zinc-700 text-zinc-300 ring-1 ring-zinc-500';
-                default: return 'bg-blue-900 text-blue-200 ring-1 ring-blue-500';
-            }
+            const map = {
+                'NATURAL': 'bg-emerald-700 text-emerald-100 ring-1 ring-emerald-500',
+                'TEMPURA': 'bg-red-800 text-red-100 ring-1 ring-red-500',
+                'FLAMBEADO': 'bg-amber-600 text-amber-50 ring-1 ring-amber-400',
+                'CALIENTE': 'bg-red-600 text-red-50 ring-1 ring-red-400',
+                'COCIDO': 'bg-gray-700 text-gray-200 ring-1 ring-gray-500',
+                'CLÁSICO': 'bg-blue-800 text-blue-100 ring-1 ring-blue-500',
+                'AUTOR': 'bg-purple-800 text-purple-100 ring-1 ring-purple-500',
+                'ALCOHOL': 'bg-yellow-900 text-yellow-200 ring-1 ring-yellow-500',
+                'VEGETARIANO': 'bg-lime-700 text-lime-100 ring-1 ring-lime-500',
+                'COMERCIAL': 'bg-zinc-700 text-zinc-300 ring-1 ring-zinc-500',
+                'DULCE': 'bg-pink-700 text-pink-100 ring-1 ring-pink-500'
+            };
+            return map[status] || 'bg-blue-900 text-blue-200 ring-1 ring-blue-500';
         }
 
         window.toggleImage = function(itemId) {
@@ -377,6 +460,63 @@
             document.getElementById('main-content').style.display = 'none';
         }
 
+        window.closePromoModal = function() {
+            document.getElementById('promo-modal').style.display = 'none';
+        }
+
+        // --- NUEVA FUNCIÓN: Búsqueda en el menú ---
+        function filterMenu() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            if (!currentBranch) return;
+
+            // Si no hay caché, la creamos
+            if (!menuCache[currentBranch]) {
+                menuCache[currentBranch] = JSON.parse(JSON.stringify(menuDataByBranch[currentBranch]));
+            }
+
+            const filteredData = menuCache[currentBranch].map(category => {
+                const filteredItems = category.items.filter(item => 
+                    item.name.toLowerCase().includes(query) || 
+                    item.desc.toLowerCase().includes(query)
+                );
+                return {...category, items: filteredItems};
+            }).filter(category => category.items.length > 0);
+
+            renderMenuFromData(filteredData);
+        }
+
+        function renderMenuFromData(data) {
+            const container = document.getElementById('menu-container');
+            if (!container) return;
+            container.innerHTML = data.map(cat => {
+                const items = cat.items.map((item, i) => {
+                    const id = `${cat.id}-${i}`;
+                    const priceFormatted = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(item.price).replace('COP', '').trim();
+                    return `
+                        <div class="menu-item-card p-4 rounded-xl cursor-pointer bg-gray-900 border border-gray-800 hover:bg-gray-800 transition" onclick="toggleImage('${id}')">
+                            <div class="grid grid-cols-[1fr_auto] gap-4 items-start">
+                                <div class="min-w-0">
+                                    <div class="flex flex-wrap items-center gap-2 mb-1">
+                                        <h3 class="font-semibold menu-item-name text-amber-400 hover:text-amber-500 transition truncate">${item.name}</h3>
+                                        <span class="${getStatusClasses(item.status)} text-xs font-bold uppercase px-2 py-1 rounded-full whitespace-nowrap">${item.status}</span>
+                                    </div>
+                                    <p class="text-gray-400 text-sm">${item.desc}</p>
+                                </div>
+                                <div class="flex flex-col items-end justify-start space-y-2">
+                                    <p class="text-xl font-extrabold text-amber-400 whitespace-nowrap">${priceFormatted}</p>
+                                    <svg id="arrow-${id}" class="w-5 h-5 text-amber-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                </div>
+                            </div>
+                            <div id="${id}" class="image-container mt-3">
+                                <img src="${item.img}" class="w-full h-auto object-cover rounded-lg border border-gray-700/50">
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                return `<section class="mb-12"><h3 class="text-3xl font-bold mb-4 text-center text-amber-400 playfair-font">${cat.category}</h3><div class="space-y-4">${items}</div></section>`;
+            }).join('');
+        }
+
         window.selectBranch = function(branchId) {
             currentBranch = branchId;
             const name = { 'central': 'Aluna Plaza', 'norte': 'Los Cocos' }[branchId];
@@ -385,44 +525,28 @@
             document.getElementById('start-screen').style.display = 'none';
             document.getElementById('main-content').style.display = 'block';
             setTimeout(() => document.getElementById('main-content').style.opacity = '1', 10);
+            document.getElementById('search-input').value = '';
+            if (!promoShown) {
+                setTimeout(() => {
+                    document.getElementById('promo-modal').style.display = 'flex';
+                    promoShown = true;
+                }, 500);
+            }
         }
 
         function renderMenu(branchId) {
-            const container = document.getElementById('menu-container');
             const data = menuDataByBranch[branchId];
-            if (!container || !data) return;
-            container.innerHTML = data.map(cat => {
-                const items = cat.items.map((item, i) => {
-                    const id = `${cat.id}-${i}`;
-                    const priceFormatted = new Intl.NumberFormat('es-CO', {
-                        style: 'currency',
-                        currency: 'COP',
-                        minimumFractionDigits: 0
-                    }).format(item.price).replace('COP', '').trim();
-                    return `
-                        <div class="menu-item-card p-4 rounded-xl cursor-pointer bg-gray-900 border border-gray-700 hover:bg-gray-800 transition" onclick="toggleImage('${id}')">
-                            <div class="flex justify-between items-start">
-                                <div class="flex-1 mr-4">
-                                    <div class="flex flex-col sm:flex-row items-start sm:items-center mb-1">
-                                        <h3 class="font-semibold menu-item-name text-gray-100 hover:text-amber-400 transition">${item.name}</h3>
-                                        <span class="${getStatusClasses(item.status)} text-xs font-bold uppercase px-2 py-1 rounded-full ml-2 mt-1 sm:mt-0">${item.status}</span>
-                                    </div>
-                                    <p class="mt-1 text-gray-400 text-sm">${item.desc}</p>
-                                </div>
-                                <div class="flex items-center space-x-4 ml-4 shrink-0">
-                                    <p class="text-xl font-extrabold text-amber-400">${priceFormatted}</p>
-                                    <svg id="arrow-${id}" class="w-5 h-5 text-amber-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                                </div>
-                            </div>
-                            <div id="${id}" class="image-container">
-                                <img src="${item.img}" class="w-full h-auto object-cover rounded-lg border-4 border-gray-700/50">
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-                return `<section class="mb-12"><h3 class="text-3xl font-bold mb-4 text-center text-amber-400 playfair-font">${cat.category}</h3><div class="space-y-4">${items}</div></section>`;
-            }).join('');
+            if (!data) return;
+            renderMenuFromData(data);
         }
+
+        // Añadir el evento de búsqueda
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', filterMenu);
+            }
+        });
 
         window.onload = function() {
             document.getElementById('start-screen').style.display = 'flex';
