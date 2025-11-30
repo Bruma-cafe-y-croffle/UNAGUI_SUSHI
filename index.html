@@ -15,7 +15,7 @@
                         'unagui-deep-black': '#0a0a0a',      // Negro Fondo
                         'unagui-charcoal': '#1c1c1c',        // Negro Carbón Tarjetas
                         'unagui-orange': '#D4A017',          // Mostaza Acento (reemplazo de #cc5500)
-                        'unagui-orange-light': '#E6B82A',    // Mostaza más claro para íconos
+                        'unagui-orange-light': '#40809',    // Mostaza más claro para íconos
                     },
                 }
             }
@@ -218,10 +218,10 @@
                 instagram: "https://www.instagram.com/unaguisushi_/"
             },
             "Sede Aluna Plaza": {
-                // WhatsApp: +57 3023220396
-                whatsapp: "573023220396",
+                // WhatsApp: +57 310 713 7496
+                whatsapp: "573107137496",
                 direccion: "Aluna Plaza, Santa Marta",
-                displayNumber: "+57 302 322 0396",
+                displayNumber: "+57 310 713 7496",
                 instagram: "https://www.instagram.com/unaguisushi_/"
             }
         };
@@ -459,11 +459,6 @@
                 { name: "SALMÓN TERIYAKI", description: "Salmón a la plancha bañado en salsa teriyaki, acompañado de ensalada de la casa y arroz yakimeshi.", price: 50, icon: "fish", image: null },
                 { name: "LOMO FINO TERIYAKI", description: "Lomo fino a la plancha bañado en salsa teriyaki, acompañado de ensalada de la casa y arroz yakimeshi.", price: 50, icon: "steak", image: null },
                 { name: "CHICKEN TERIYAKI", description: "Pollo a la plancha bañado en salsa teriyaki, acompañado de ensalada de la casa y arroz yakimeshi.", price: 40, icon: "bone", image: null },
-            ],
-            "Postres": [
-                { name: "BROWNIE", description: "Brownie de chocolate con helado de vainilla.", price: 15, icon: "ice-cream", image: null },
-                { name: "ROLLO NUTELLA", description: "Roll de nutella con banano y helado.", price: 18, icon: "cake", image: null },
-                { name: "POSTRE 3 LECHES", description: "Postre tradicional 3 leches.", price: 15, icon: "cake", image: null },
             ]
         };
         // --- UNIFICACIÓN DE MENÚS POR SEDE ---
@@ -520,9 +515,9 @@
             document.getElementById('menu-container').classList.remove('hidden');
             initializeMenuCategories();
             updateNavLinks(); // Asegura que los links de contacto se actualicen
-            // Mostrar el modal de promoción después de 5 segundos
+            // Mostrar el modal de promoción después de 2 segundos
             if (promoTimeout) clearTimeout(promoTimeout);
-            promoTimeout = setTimeout(showPromoModal, 5000); // 5 segundos
+            promoTimeout = setTimeout(showPromoModal, 5000); // 2 segundos
         }
         function formatPrice(amount) {
             // Formatea el precio a COP (Pesos Colombianos) con el formato 0.000
