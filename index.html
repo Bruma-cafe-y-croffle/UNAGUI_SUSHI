@@ -170,14 +170,14 @@
             </div>
         </div>
     </div>
-    <!-- MODAL DE PROMOCIÓN (VENTANA EMERGENTE) -->
+    <!-- MODAL DE PROMOCIÓN (VENTANA EMERGENTE SOLO EN ALUNA PLAZA) -->
     <div id="promo-modal" class="fixed inset-0 z-40 hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onclick="closePromoModal()">
         <div id="promo-card" class="w-full max-w-sm bg-unagui-charcoal rounded-xl shadow-2xl border-2 border-unagui-orange/80 overflow-hidden promo-modal-enter" onclick="event.stopPropagation()">
             <!-- Imagen del Producto Promocional -->
             <div class="relative h-40 bg-gray-800 flex items-center justify-center">
                 <img id="promo-img" src="" alt="Promoción Destacada" class="w-full h-full object-cover opacity-70">
                 <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-                    <span class="text-3xl font-bold text-white tracking-widest uppercase">¡OFERTA!</span>
+                    <span class="text-3xl font-bold text-white tracking-widest uppercase"></span>
                 </div>
             </div>
             <div class="p-5">
@@ -190,7 +190,7 @@
                     <button onclick="closePromoModal()" class="text-sm font-medium text-gray-400 hover:text-white transition-colors">
                         Cerrar
                     </button>
-                    <button onclick="closePromoModal(); /* Aquí podrías añadir lógica para ir a la categoría */" class="px-4 py-2 bg-unagui-orange text-black font-semibold rounded-lg hover:bg-unagui-orange-light transition-colors text-sm">
+                    <button onclick="closePromoModal(); /* APRECE PROMOCION SOLO PARA CATEGORIA DE ALUNA PLAZA */" class="px-4 py-2 bg-unagui-orange text-black font-semibold rounded-lg hover:bg-unagui-orange-light transition-colors text-sm">
                         Ver Detalles
                     </button>
                 </div>
@@ -200,11 +200,11 @@
     <script>
         // --- DATOS DE PROMOCIÓN (EDITAR AQUÍ) ---
         const promotionData = {
-            title: "RAMEN UNAGUI",
-            description: "¡Prueva nuestro plato nuevo! descubre nuestro nuevo ramen al estilo unagui: fideos en un fondo delicado con cerdo o pollo, huevo, tofu y nori, un plato reconfortante que despierta todos tus sentidos.",
-            price: " $ 40.000",
+            title: "EMI ROLL",
+            description: "¡Prueva nuestro plato nuevo! Un delicado balance de palmito trufado, langostino en tempura y queso crema, envuelto en un fino papel de soya que abraza cada sabor como una obra de arte. Déjate sorprender por su suavidad y su magia.",
+            price: " $ 55.000",
             // Usa una imagen de placeholder si no tienes una URL de imagen real
-            image: "https://github.com/Bruma-cafe-y-croffle/bruma-asses/blob/main/Ramen%20(2).jpg?raw=true" 
+            image: "https://github.com/Bruma-cafe-y-croffle/bruma-asses/blob/main/Emi%20roll.jpg?raw=true" 
             // Si tienes una URL, úsala aquí: "https://tudominio.com/foto-promocional.jpg"
         };
         // --- FIN DATOS DE PROMOCIÓN ---
